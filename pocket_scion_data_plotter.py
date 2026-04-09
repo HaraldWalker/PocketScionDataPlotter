@@ -179,8 +179,14 @@ class OSCReceiver:
         if self.server:
             try:
                 self.server.shutdown()
+                self.server.server_close()
+                # Force close the socket
+                if hasattr(self.server, 'socket'):
+                    self.server.socket.close()
             except Exception:
                 pass
+        self.server = None
+        self.thread = None
 
     @property
     def signal_ok(self):
@@ -209,6 +215,9 @@ class ScionPlotterApp:
         self.show_mean = tk.BooleanVar(value=True)
         self.show_deviation = tk.BooleanVar(value=True)
         self.auto_scale = tk.BooleanVar(value=True)
+        
+        # Track the update callback ID
+        self.update_callback_id = None
         
         # Build GUI
         self.build_gui()
@@ -396,7 +405,7 @@ class ScionPlotterApp:
         self.update_status()
         
         # Schedule next update
-        self.root.after(1000, self.update_plot)
+        self.update_callback_id = self.root.after(1000, self.update_plot)
 
     def update_status(self):
         """Update the status bar."""
@@ -476,8 +485,22 @@ class ScionPlotterApp:
 
     def on_closing(self):
         """Handle application closing."""
-        if self.osc_receiver:
-            self.osc_receiver.stop()
+        try:
+            if self.osc_receiver:
+                self.osc_receiver.stop()
+        except Exception:
+            pass
+        
+        # Cancel any pending after() calls
+        try:
+            if self.update_callback_id:
+                self.root.after_cancel(self.update_callback_id)
+                self.update_callback_id = None
+        except Exception:
+            pass
+            
+        # Force quit the application
+        self.root.quit()
         self.root.destroy()
 
 
@@ -490,7 +513,14 @@ def main():
     try:
         root.mainloop()
     except KeyboardInterrupt:
-        pass
+        app.on_closing()
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        app.on_closing()
+    finally:
+        # Ensure cleanup
+        import sys
+        sys.exit(0)
 
 
 if __name__ == "__main__":
