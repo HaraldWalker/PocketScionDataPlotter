@@ -2,6 +2,8 @@
 
 A Python GUI application for real-time plotting and visualization of [Pocket Scion](https://pocketscion.com/) sensor data using OSC (Open Sound Control) communication.
 
+![screenshot.png](screenshot.png)
+
 ## Features
 
 - **Real-time Data Plotting**: Live visualization of Pocket Scion sensor data
