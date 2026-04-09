@@ -1,16 +1,15 @@
 # Pocket Scion Data Plotter
 
-A Python GUI application for real-time plotting and visualization of Pocket Scion sensor data using OSC (Open Sound Control) communication.
+A Python GUI application for real-time plotting and visualization of [Pocket Scion](https://pocketscion.com/) sensor data using OSC (Open Sound Control) communication.
 
 ## Features
 
 - **Real-time Data Plotting**: Live visualization of Pocket Scion sensor data
 - **Dark Theme**: Modern dark interface for better visibility and reduced eye strain
 - **Data Selection**: Choose which data streams to display (Mean, Deviation)
-- **Export Capabilities**: Save plots as images and export data to CSV
+- **Export Capabilities**: Save plots as images and export data to JSON
 - **OSC Integration**: Receives data via OSC protocol from Pocket Scion devices
 - **Auto-scaling**: Optional automatic scaling of plot axes
-- **30-second Time Window**: Shows the last 30 seconds of data for optimal visibility
 
 ## Requirements
 
@@ -25,7 +24,7 @@ A Python GUI application for real-time plotting and visualization of Pocket Scio
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/PocketScionDataPlotter.git
+   git clone https://github.com/HaraldWalker/PocketScionDataPlotter.git
    cd PocketScionDataPlotter
    ```
 
@@ -41,11 +40,25 @@ A Python GUI application for real-time plotting and visualization of Pocket Scio
 
 ## Usage
 
-1. **Start OSC Data Source**: Ensure your Pocket Scion device is sending OSC data to:
-   - IP: `127.0.0.1` (localhost)
-   - Port: `11045`
+### Prerequisites
+Before running the application, you must:
 
-2. **Launch Application**: Run the Python script to start the GUI
+1. **Pocket Scion Hardware**: Ensure you have the Pocket Scion hardware device connected to your computer via USB.
+
+2. **Pocket Scion Controller application**: Install and run the [Pocket Scion Controller](https://pocketscion.com/) application on your computer.
+
+### Running the Application
+
+1. **Prepare Pocket Scion Hardware**: 
+   - Ensure the Pocket Scion device is powered and connected
+   - Press and hold both [Voices] Sensitivity Buttons for 3 seconds to enable Raw Output Mode
+   - Look for white LED animations to confirm raw data is being transmitted
+   - Test the device by providing stimulation to verify frequency changes
+
+2. **Launch Data Plotter**: Run the Python script:
+   ```bash
+   python pocket_scion_data_plotter.py
+   ```
 
 3. **Select Data**: Use checkboxes to choose which data streams to display:
    - Mean Data: Shows the mean resistance values
@@ -62,13 +75,13 @@ A Python GUI application for real-time plotting and visualization of Pocket Scio
    - Sample counts
    - OSC signal status
 
-## OSC Data Format
+### Troubleshooting Connection Issues
 
-The application expects OSC messages with the following addresses:
-- `/mean`: Mean resistance values in Mega-ohms
-- `/deviation`: Deviation values in Mega-ohms
-
-Data is processed using 555 timer calculations to convert edge values to resistance measurements.
+If you see "No Signal" in the status bar:
+- Verify Pocket Scion hardware device is powered and connected
+- Check that Raw Output Mode is enabled: press and hold both [Voices] Sensitivity Buttons for 3 seconds
+- Look for white LED animations to confirm raw data transmission
+- Test by providing stimulation to verify the device responds with frequency changes
 
 ## Technical Details
 
@@ -94,9 +107,14 @@ Data is processed using 555 timer calculations to convert edge values to resista
 ### Common Issues
 
 1. **No OSC Data Connection**
-   - Check that Pocket Scion app is running
-   - Verify IP address (127.0.0.1) and port (11045)
+   - Verify Pocket Scion hardware device is powered and connected
+   - Ensure Raw Output Mode is enabled: press and hold both [Voices] Sensitivity Buttons for 3 seconds
+   - Look for white LED animations to confirm raw data transmission
+   - Test by providing stimulation to verify frequency changes are detected
+   - Confirm OSC output settings if configurable on hardware (IP: 127.0.0.1, Port: 11045)
    - Ensure firewall allows UDP traffic on port 11045
+   - Try disabling and re-enabling Raw Output Mode (hold both buttons for 3 seconds)
+   - Power cycle the Pocket Scion device and restart the plotter if needed
 
 2. **Button Styling Issues on macOS**
    - The application uses custom ClickableLabel components to avoid macOS button focus issues
