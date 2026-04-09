@@ -36,7 +36,7 @@ jobs:
 
     - name: Build application
       run: |
-        python -m PyInstaller --onefile --windowed --name "Pocket Scion Data Plotter" pocket_scion_data_plotter.py
+        python -m PyInstaller --windowed --name "PocketScionPlotter" --osx-bundle-identifier=com.haraldwalker.pocketscionplotter pocket_scion_data_plotter.py
 
     - name: Create artifacts directory
       run: mkdir -p dist
@@ -45,18 +45,18 @@ jobs:
       run: |
         if [ "${{ matrix.os }}" = "macos-latest" ]; then
           # macOS: Create .app bundle
-          mkdir -p "dist/Pocket Scion Data Plotter.app/Contents/MacOS"
-          cp "dist/Pocket Scion Data Plotter" "dist/Pocket Scion Data Plotter.app/Contents/MacOS/"
-          echo '#!/bin/bash' > "dist/Pocket Scion Data Plotter.app/Contents/MacOS/Pocket Scion Data Plotter"
-          echo 'exec "`dirname "$0"`/Pocket Scion Data Plotter"' >> "dist/Pocket Scion Data Plotter.app/Contents/MacOS/Pocket Scion Data Plotter"
-          chmod +x "dist/Pocket Scion Data Plotter.app/Contents/MacOS/Pocket Scion Data Plotter"
-          cd dist && zip -r "PocketScionDataPlotter-macos.zip" "Pocket Scion Data Plotter.app"
+          mkdir -p "dist/PocketScionPlotter.app/Contents/MacOS"
+          cp "dist/PocketScionPlotter" "dist/PocketScionPlotter.app/Contents/MacOS/"
+          echo '#!/bin/bash' > "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          echo 'exec "`dirname "$0"`/PocketScionPlotter"' >> "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          chmod +x "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          cd dist && zip -r "PocketScionDataPlotter-macos.zip" "PocketScionPlotter.app"
         elif [ "${{ matrix.os }}" = "windows-latest" ]; then
           # Windows: Create .zip with executable
-          cd dist && zip "PocketScionDataPlotter-windows.zip" "Pocket Scion Data Plotter.exe"
+          cd dist && zip "PocketScionDataPlotter-windows.zip" "PocketScionPlotter.exe"
         else
           # Linux: Create .tar.gz with executable
-          cd dist && tar -czf "PocketScionDataPlotter-linux.tar.gz" "Pocket Scion Data Plotter"
+          cd dist && tar -czf "PocketScionDataPlotter-linux.tar.gz" "PocketScionPlotter"
         fi
 
     - name: Upload artifacts
