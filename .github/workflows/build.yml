@@ -36,7 +36,7 @@ jobs:
 
     - name: Build application
       run: |
-        python -m PyInstaller --windowed --name "PocketScionPlotter" --osx-bundle-identifier=com.haraldwalker.pocketscionplotter pocket_scion_data_plotter.py
+        python -m PyInstaller --windowed --onefile --name "PocketScionPlotter" pocket_scion_data_plotter.py
 
     - name: Create artifacts directory
       run: mkdir -p dist
@@ -45,12 +45,12 @@ jobs:
       run: |
         if [ "${{ matrix.os }}" = "macos-latest" ]; then
           # macOS: Create .app bundle
-          mkdir -p "dist/PocketScionPlotter.app/Contents/MacOS"
-          cp "dist/PocketScionPlotter" "dist/PocketScionPlotter.app/Contents/MacOS/"
-          echo '#!/bin/bash' > "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
-          echo 'exec "`dirname "$0"`/PocketScionPlotter"' >> "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
-          chmod +x "dist/PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
-          cd dist && zip -r "PocketScionDataPlotter-macos.zip" "PocketScionPlotter.app"
+          mkdir -p "PocketScionPlotter.app/Contents/MacOS"
+          cp "dist/PocketScionPlotter" "PocketScionPlotter.app/Contents/MacOS/"
+          echo '#!/bin/bash' > "PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          echo 'exec "`dirname "$0"`/PocketScionPlotter"' >> "PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          chmod +x "PocketScionPlotter.app/Contents/MacOS/PocketScionPlotter"
+          zip -r "PocketScionDataPlotter-macos.zip" "PocketScionPlotter.app"
         elif [ "${{ matrix.os }}" = "windows-latest" ]; then
           # Windows: Create .zip with executable
           cd dist && zip "PocketScionDataPlotter-windows.zip" "PocketScionPlotter.exe"
@@ -96,7 +96,7 @@ jobs:
           - **Linux**: `PocketScionDataPlotter-linux.tar.gz`
           
           ### Installation
-          1. Download the appropriate file for your platform
+          1. Download appropriate file for your platform
           2. Extract and run the executable
           3. Follow setup instructions in README.md
         draft: false
