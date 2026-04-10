@@ -8,6 +8,8 @@ A modern web application for real-time plotting and visualization of [Pocket Sci
 
 Live demo available at https://sonicwalker.com/psdp/  
 
+![screenshot-web.png](screenshot-web.png)
+
 ## Features
 
 - **Cross-Platform**: Runs in any modern browser with Web MIDI API support
