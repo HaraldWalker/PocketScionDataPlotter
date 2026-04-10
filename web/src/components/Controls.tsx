@@ -11,6 +11,7 @@ export const Controls: React.FC = () => {
   const showMean = useStore((state) => state.showMean)
   const showDeviation = useStore((state) => state.showDeviation)
   const autoScale = useStore((state) => state.autoScale)
+  const capturePaused = useStore((state) => state.capturePaused)
   const meanData = useStore((state) => state.meanData)
   const deviationData = useStore((state) => state.deviationData)
   const midiDevices = useStore((state) => state.midiDevices)
@@ -19,6 +20,7 @@ export const Controls: React.FC = () => {
   const setShowMean = useStore((state) => state.setShowMean)
   const setShowDeviation = useStore((state) => state.setShowDeviation)
   const setAutoScale = useStore((state) => state.setAutoScale)
+  const setCapturePaused = useStore((state) => state.setCapturePaused)
   const clearData = useStore((state) => state.clearData)
   const setSelectedDeviceId = useStore((state) => state.setSelectedDeviceId)
 
@@ -28,6 +30,16 @@ export const Controls: React.FC = () => {
 
   const handleExportCSV = () => {
     exportToCSV(meanData, deviationData)
+  }
+
+  const handleSaveImage = () => {
+    const canvas = document.querySelector('canvas')
+    if (canvas) {
+      const link = document.createElement('a')
+      link.download = 'pocket-scion-graph.png'
+      link.href = canvas.toDataURL('image/png')
+      link.click()
+    }
   }
 
   const handleDeviceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -95,10 +107,27 @@ export const Controls: React.FC = () => {
 
         <div className="flex gap-2">
           <button
+            onClick={() => setCapturePaused(!capturePaused)}
+            className={`px-4 py-2 text-white rounded transition-colors ${
+              capturePaused 
+                ? 'bg-green-500 hover:bg-green-600' 
+                : 'bg-yellow-500 hover:bg-yellow-600'
+            }`}
+          >
+            {capturePaused ? 'Resume' : 'Pause'}
+          </button>
+          <button
             onClick={clearData}
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
           >
             Clear
+          </button>
+          <button
+            onClick={handleSaveImage}
+            disabled={meanData.length === 0 && deviationData.length === 0}
+            className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Save Image
           </button>
           <button
             onClick={handleExportJSON}

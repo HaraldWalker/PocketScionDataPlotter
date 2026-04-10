@@ -17,6 +17,7 @@ interface AppStore extends AppState {
   setShowMean: (show: boolean) => void
   setShowDeviation: (show: boolean) => void
   setAutoScale: (auto: boolean) => void
+  setCapturePaused: (paused: boolean) => void
   setSignalOk: (ok: boolean) => void
   setLastRxTime: (time: number) => void
 }
@@ -34,6 +35,7 @@ export const useStore = create<AppStore>((set) => ({
   showMean: true,
   showDeviation: true,
   autoScale: true,
+  capturePaused: false,
   signalOk: false,
   lastRxTime: 0,
 
@@ -61,6 +63,8 @@ export const useStore = create<AppStore>((set) => ({
   setShowDeviation: (show) => set({ showDeviation: show }),
   
   setAutoScale: (auto) => set({ autoScale: auto }),
+  
+  setCapturePaused: (paused) => set({ capturePaused: paused }),
   
   setSignalOk: (ok) => set({ signalOk: ok }),
   

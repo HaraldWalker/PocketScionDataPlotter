@@ -24,6 +24,7 @@ export interface AppState {
   showMean: boolean
   showDeviation: boolean
   autoScale: boolean
+  capturePaused: boolean
   
   // Signal state
   signalOk: boolean

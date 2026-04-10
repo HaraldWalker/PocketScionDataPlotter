@@ -52,7 +52,15 @@ function App() {
             : 0
 
           // Get current show settings from store to respect user's selection
-          const { showMean: currentShowMean, showDeviation: currentShowDeviation } = useStore.getState()
+          const { showMean: currentShowMean, showDeviation: currentShowDeviation, capturePaused } = useStore.getState()
+
+          // Skip data collection if paused
+          if (capturePaused) {
+            // Update signal status even when paused
+            setSignalOk(true)
+            setLastRxTime(Date.now())
+            return
+          }
 
           // Only collect data for selected data types
           if (currentShowMean) {
