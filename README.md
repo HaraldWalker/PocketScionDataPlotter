@@ -28,7 +28,7 @@ This repository contains three implementations targeting different platforms:
 - **Dependency**: No controller app required
 - **See**: [swift/README.md](swift/README.md)
 
-### Web Implementation 🚧
+### Web Implementation ✅
 - **Location**: `web/`
 - **Status**: Done
 - **Target**: Any modern browser with Web MIDI API
